@@ -5,6 +5,9 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import FormOne from "./FormOne";
+import FormTwo from "./FormTwo";
+import FormThree from "./FormThree";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,21 +23,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return [
-    "Select master blaster campaign settings",
-    "Create an ad group",
-    "Create an ad",
-  ];
+  return ["Form 1 out of 3", "Form 2 out of 3", "Form 3 out of 3"];
 }
 
-function getStepContent(stepIndex: Number) {
+function getStepContent(stepIndex: Number, handleNext: () => void) {
   switch (stepIndex) {
     case 0:
-      return "Select campaign settings...";
+      return <FormOne handleNext={handleNext} />;
     case 1:
-      return "What is an ad group anyways?";
+      return <FormTwo handleNext={handleNext} />;
     case 2:
-      return "This is the bit I really care about!";
+      return <FormThree handleNext={handleNext} />;
     default:
       return "Unknown stepIndex";
   }
@@ -57,8 +56,31 @@ export default function StepperForm() {
     setActiveStep(0);
   };
 
+  //   interface Values {
+  //     firstName: string;
+  //     lastName: string;
+  //     email: string;
+  //   }
+
   return (
     <div className={classes.root}>
+      {/* <Formik
+        initialValues={{
+          firstName: "",
+          lastName: "",
+          email: "",
+        }}
+        onSubmit={(
+          values: Values,
+          { setSubmitting }: FormikHelpers<Values>
+        ) => {
+          setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+          }, 500);
+        }}
+      ></Formik> */}
+
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((label) => (
           <Step key={label}>
@@ -77,7 +99,7 @@ export default function StepperForm() {
         ) : (
           <div>
             <Typography className={classes.instructions}>
-              {getStepContent(activeStep)}
+              {getStepContent(activeStep, handleNext)}
             </Typography>
             <div>
               <Button
