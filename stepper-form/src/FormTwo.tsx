@@ -1,27 +1,38 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    "& > *": {
-      margin: theme.spacing(1),
-      width: "25ch",
-    },
-  },
-}));
-
-interface props {
+interface Props {
   handleNext: () => void;
 }
 
-const FormTwo: React.FC<props> = ({ handleNext }) => {
-  const classes = useStyles();
-
+const FormTwo: React.FC<Props> = ({ handleNext }) => {
   return (
-    <form className={classes.root} noValidate autoComplete="off">
-      <TextField id="standard-basic" label="Last Name" />
-    </form>
+    <Formik
+      initialValues={{ lastName: "" }}
+      validationSchema={Yup.object({
+        lastName: Yup.string()
+          .max(15, "Must be 15 characters or less")
+          .required("Required*"),
+      })}
+      onSubmit={(values) => {
+        setTimeout(() => {
+          console.log(JSON.stringify(values, null, 2));
+          handleNext();
+        }, 400);
+      }}
+    >
+      <Form>
+        <label htmlFor="lastName">Last Name: </label>
+        <Field name="lastName" type="text" />
+        <br />
+        <ErrorMessage name="lastName" />
+
+        <br />
+
+        <button type="submit">Next</button>
+      </Form>
+    </Formik>
   );
 };
 

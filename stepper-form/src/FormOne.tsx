@@ -30,7 +30,7 @@ const FormOne: React.FC<Props> = ({ handleNext }) => {
 
         <br />
 
-        <button type="submit">Submit</button>
+        <button type="submit">Next</button>
       </Form>
     </Formik>
   );
